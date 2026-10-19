@@ -3,26 +3,147 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>À propos et confidentialité – OutilsTN</title>
+<title>OutilsTN – Outils gratuits en ligne (QR, mot de passe, compteur de mots)</title>
+<meta name="description" content="Générateur de QR code, générateur de mot de passe et compteur de mots. Gratuit, rapide, sans inscription.">
 <style>
-:root{--bg:#f3f6f4;--ink:#14231c;--accent:#0b6e4f}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1a15;--ink:#e6f0ea;--accent:#4cc79a}}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Georgia,serif}
-main{max-width:700px;margin:0 auto;padding:24px}
-a{color:var(--accent)}
+:root{--bg:#f3f6f4;--ink:#14231c;--card:#fff;--line:#cfdad4;--accent:#0b6e4f;--accent-ink:#fff;--muted:#53665d}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1a15;--ink:#e6f0ea;--card:#17261f;--line:#2a3d34;--accent:#4cc79a;--accent-ink:#0f1a15;--muted:#9bb0a5}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+header,main,footer{max-width:760px;margin:0 auto;padding:20px}
+h1{font-size:2rem;line-height:1.2;margin:.5em 0 .2em}
+p.sub{color:var(--muted);margin:0 0 1em}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:18px 0}
+h2{margin:0 0 .6em;font-size:1.25rem}
+input,textarea,select,button{font:inherit;color:inherit}
+input,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:10px 16px;cursor:pointer;margin-top:10px}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.out{margin-top:12px;word-break:break-all;font-family:ui-monospace,monospace}
+.ad{min-height:90px;border:1px dashed var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.85rem;margin:18px 0}
+.aff a{color:var(--accent)}
+footer{color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body>
-<main>
-  <p><a href="/">← Retour aux outils</a></p>
-  <h1>À propos</h1>
-  <p>OutilsTN propose des outils en ligne gratuits : QR code, mot de passe, compteur de mots et convertisseur de devises. Tout fonctionne dans ton navigateur, sans inscription.</p>
+<header>
+  <h1>OutilsTN : outils gratuits, sans inscription</h1>
+  <p class="sub">Génère un QR code, un mot de passe solide, ou compte les mots d’un texte.</p>
+</header>
 
-  <h1>Politique de confidentialité</h1>
-  <p><strong>Données que tu saisis.</strong> Les textes, liens et montants que tu entres dans les outils sont traités dans ton navigateur et ne sont pas envoyés à nos serveurs. Seul le convertisseur contacte un service externe de taux de change pour récupérer le taux.</p>
-  <p><strong>Cookies et publicité.</strong> Ce site peut afficher des publicités Google AdSense. Google et ses partenaires peuvent utiliser des cookies pour afficher des annonces selon tes visites. Tu peux gérer ces préférences sur <a href="https://adssettings.google.com" rel="noopener">adssettings.google.com</a>.</p>
-  <p><strong>Liens d’affiliation.</strong> Certains liens sont affiliés. Si tu achètes via ces liens, nous pouvons recevoir une commission, sans coût supplémentaire pour toi.</p>
-  <p><strong>Contact.</strong> Pour toute question : remplace cette ligne par ton adresse e-mail.</p>
+<main>
+  <!-- ADS: après approbation AdSense, colle ici ton bloc <ins class="adsbygoogle"> -->
+  <div class="ad" id="ad-top">Espace publicitaire</div>
+
+  <section aria-labelledby="qr">
+    <h2 id="qr">Générateur de QR code</h2>
+    <label for="qrText">Lien ou texte</label>
+    <input id="qrText" placeholder="https://exemple.com">
+    <button id="qrBtn">Créer le QR code</button>
+    <div id="qrOut" class="out"></div>
+  </section>
+
+  <section aria-labelledby="pw">
+    <h2 id="pw">Générateur de mot de passe</h2>
+    <label for="pwLen">Longueur : <span id="pwLenV">16</span></label>
+    <input id="pwLen" type="range" min="8" max="48" value="16">
+    <button id="pwBtn">Générer</button>
+    <button id="pwCopy">Copier</button>
+    <div id="pwOut" class="out" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="wc">
+    <h2 id="wc">Compteur de mots</h2>
+    <label for="wcText">Colle ton texte</label>
+    <textarea id="wcText" rows="5"></textarea>
+    <div class="out" id="wcOut" aria-live="polite">0 mot · 0 caractère</div>
+  </section>
+
+  <section aria-labelledby="fx">
+    <h2 id="fx">Convertisseur TND ↔ devises</h2>
+    <label for="fxAmt">Montant</label>
+    <input id="fxAmt" type="number" min="0" step="any" value="100">
+    <label for="fxDir">Conversion</label>
+    <select id="fxDir" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)">
+      <option value="TND-EUR">TND → EUR</option>
+      <option value="EUR-TND">EUR → TND</option>
+      <option value="TND-USD">TND → USD</option>
+      <option value="USD-TND">USD → TND</option>
+    </select>
+    <button id="fxBtn">Convertir</button>
+    <div class="out" id="fxOut" aria-live="polite"></div>
+    <p class="sub" style="font-size:.85rem">Taux officiels indicatifs, ils peuvent différer de ceux de ta banque.</p>
+  </section>
+
+  <div class="ad" id="ad-mid">Espace publicitaire</div>
+
+  <section class="aff" aria-labelledby="rec">
+    <h2 id="rec">Outils recommandés</h2>
+    <!-- Remplace # par tes liens d’affiliation (VPN, gestionnaire de mots de passe, hébergement) -->
+    <p><a href="#" rel="sponsored noopener">Gestionnaire de mots de passe</a> : garde tous tes mots de passe en sécurité.</p>
+    <p><a href="#" rel="sponsored noopener">VPN</a> : protège ta connexion sur les Wi-Fi publics.</p>
+  </section>
 </main>
+
+<footer>
+  Certains liens sont des liens d’affiliation : on peut toucher une commission sans frais pour toi.
+  <br><a href="/privacy.html" style="color:var(--accent)">À propos et confidentialité</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+// QR code
+$('qrBtn').onclick = () => {
+  const v = $('qrText').value.trim();
+  const out = $('qrOut');
+  out.innerHTML = '';
+  if (!v) { out.textContent = 'Entre un lien ou un texte.'; return; }
+  new QRCode(out, { text: v, width: 200, height: 200 });
+};
+
+// Mot de passe
+$('pwLen').oninput = e => $('pwLenV').textContent = e.target.value;
+$('pwBtn').onclick = () => {
+  const chars = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%^&*-_';
+  const n = +$('pwLen').value;
+  const a = new Uint32Array(n);
+  crypto.getRandomValues(a);
+  $('pwOut').textContent = Array.from(a, x => chars[x % chars.length]).join('');
+};
+$('pwCopy').onclick = async () => {
+  const t = $('pwOut').textContent;
+  if (!t) return;
+  try { await navigator.clipboard.writeText(t); $('pwCopy').textContent = 'Copié'; }
+  catch { $('pwCopy').textContent = 'Copie impossible'; }
+  setTimeout(() => $('pwCopy').textContent = 'Copier', 1500);
+};
+
+// Convertisseur
+$('fxBtn').onclick = async () => {
+  const [from, to] = $('fxDir').value.split('-');
+  const amt = parseFloat($('fxAmt').value);
+  const out = $('fxOut');
+  if (isNaN(amt) || amt < 0) { out.textContent = 'Entre un montant valide.'; return; }
+  out.textContent = 'Chargement…';
+  try {
+    const r = await fetch('https://open.er-api.com/v6/latest/' + from);
+    const d = await r.json();
+    const rate = d.rates && d.rates[to];
+    if (!rate) throw new Error('no rate');
+    out.textContent = `${amt} ${from} = ${(amt * rate).toFixed(3)} ${to} (taux : ${rate.toFixed(4)})`;
+  } catch {
+    out.textContent = 'Impossible de récupérer le taux. Vérifie ta connexion et réessaie.';
+  }
+};
+
+// Compteur de mots
+$('wcText').oninput = e => {
+  const t = e.target.value.trim();
+  const w = t ? t.split(/\s+/).length : 0;
+  $('wcOut').textContent = `${w} mot${w > 1 ? 's' : ''} · ${e.target.value.length} caractères`;
+};
+</script>
 </body>
 </html>
