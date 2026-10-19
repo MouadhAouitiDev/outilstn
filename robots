@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://outilstn.vercel.app/sitemap.xml
